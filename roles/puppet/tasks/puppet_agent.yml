@@ -4,6 +4,8 @@
     name:  puppet-agent
     state: present
   when: ansible_os_family == "RedHat"
+  notify:
+  - Reinicia o agente
  
 - name: Instala o repo para o Debian 
   apt:
@@ -11,3 +13,5 @@
     state: present
     update_cache: yes
   when: ansible_os_family == "Debian"  
+  notify:
+  - Reinicia o agente
