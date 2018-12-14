@@ -1,0 +1,38 @@
+---
+- include_vars: DC1.yml
+  when: ansible_distribution == "CentOS"
+- include_vars: DC2.yml
+  when: ansible_distribution == "Ubuntu"
+
+- block:
+
+  - name: Instala o apache no RHEL7
+    yum:
+      name: httpd
+      state: present
+  
+  - name: Reinicia o apache
+    service:
+      name: httpd
+      state: restarted
+
+  when: ansible_distribution == "CentOS"
+
+- block:
+
+  - name: Instala o apache no Ubuntu
+    yum:
+      name: apache2
+      state: present
+  
+  - name: Reinicia o apache
+    service:
+      name: apache2
+      state: restarted
+
+  when: ansible_distribution == "Ubuntu"
+
+- name: Copia o site
+  template:
+    src: index.html
+    dest: /var/www/html/index.html
